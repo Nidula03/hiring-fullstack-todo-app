@@ -3,6 +3,38 @@
   border-bottom: 1px solid #f0f9f8;
 }
 
+.form-error {
+  background-color: #fee;
+  color: #c33;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  border-left: 4px solid #c33;
+  font-size: 0.9em;
+  font-weight: 500;
+  animation: slideDown 0.3s ease, fadeOut 0.5s ease 4.5s forwards;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 .form-group {
   margin-bottom: 0;
 }

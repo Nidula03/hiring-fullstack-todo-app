@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './TodoForm.css';
 
 function TodoForm({ onAddTodo }) {
@@ -6,26 +6,46 @@ function TodoForm({ onAddTodo }) {
   const [description, setDescription] = useState('');
   const [dueDate, setDueDate] = useState('');
   const [isExpanded, setIsExpanded] = useState(false);
+  const [error, setError] = useState('');
+
+  // Clear error after 5 seconds
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        setError('');
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (title.trim()) {
-      onAddTodo(title, description, dueDate);
-      setTitle('');
-      setDescription('');
-      setDueDate('');
-      setIsExpanded(false);
+    if (!title.trim()) {
+      setError('Please enter a task title');
+      return;
     }
+    onAddTodo(title, description, dueDate);
+    setTitle('');
+    setDescription('');
+    setDueDate('');
+    setIsExpanded(false);
+    setError('');
+  };
+
+  const handleTitleChange = (e) => {
+    setTitle(e.target.value);
+    if (error) setError('');
   };
 
   return (
     <form className="todo-form" onSubmit={handleSubmit}>
+      {error && <div className="form-error">{error}</div>}
       <div className="form-group">
         <input
           type="text"
           placeholder="Add a new task..."
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
+          onChange={handleTitleChange}
           onFocus={() => setIsExpanded(true)}
           className="title-input"
         />
