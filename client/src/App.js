@@ -11,6 +11,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [socket, setSocket] = useState(null);
+  const [filterDate, setFilterDate] = useState('');
 
   const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:8000/api/todos';
   const SOCKET_URL = process.env.REACT_APP_SOCKET_URL || 'http://localhost:8000';
@@ -70,12 +71,12 @@ function App() {
     }
   };
 
-  const addTodo = async (title, description) => {
+  const addTodo = async (title, description, dueDate) => {
     try {
       const response = await fetch(API_BASE, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ title, description }),
+        body: JSON.stringify({ title, description, dueDate: dueDate || null }),
       });
       if (!response.ok) throw new Error('Failed to create todo');
       await response.json();
@@ -145,11 +146,34 @@ function App() {
 
           <TodoForm onAddTodo={addTodo} />
 
+          <div className="filter-section">
+            <label htmlFor="date-filter">Filter by Due Date:</label>
+            <input
+              id="date-filter"
+              type="date"
+              value={filterDate}
+              onChange={(e) => setFilterDate(e.target.value)}
+              className={`date-filter-input ${filterDate ? 'has-value' : ''}`}
+            />
+            {filterDate && (
+              <button
+                className="clear-filter-btn"
+                onClick={() => setFilterDate('')}
+              >
+                Clear Filter
+              </button>
+            )}
+          </div>
+
           {loading ? (
             <div className="loading">Loading todos...</div>
           ) : (
             <TodoList
-              todos={todos}
+              todos={filterDate ? todos.filter((todo) => {
+                if (!todo.dueDate) return false;
+                const todoDueDate = new Date(todo.dueDate).toISOString().split('T')[0];
+                return todoDueDate === filterDate;
+              }) : todos}
               onUpdateTodo={updateTodo}
               onToggleDone={toggleDone}
               onDeleteTodo={deleteTodo}
