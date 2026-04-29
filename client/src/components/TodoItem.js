@@ -65,8 +65,13 @@ function TodoItem({ todo, onUpdateTodo, onToggleDone, onDeleteTodo }) {
           <>
             <h3 className="todo-title">{todo.title}</h3>
             {todo.description && <p className="todo-description">{todo.description}</p>}
+            {todo.dueDate && (
+              <small className="todo-due-date">
+                📅 Due: {new Date(todo.dueDate).toLocaleDateString()}
+              </small>
+            )}
             <small className="todo-date">
-              {new Date(todo.createdAt).toLocaleDateString()}
+              Created: {new Date(todo.createdAt).toLocaleDateString()}
             </small>
           </>
         )}

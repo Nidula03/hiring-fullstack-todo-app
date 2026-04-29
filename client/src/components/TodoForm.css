@@ -113,3 +113,26 @@
 .add-btn:active {
   transform: translateY(0);
 }
+
+.date-input {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 0.95em;
+  border: 2px solid #e0f5f0;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+  background: #f8fffe;
+  cursor: pointer;
+}
+
+.date-input:hover {
+  border-color: #17eba4;
+}
+
+.date-input:focus {
+  outline: none;
+  border-color: #17eba4;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(23, 235, 164, 0.1);
+}
