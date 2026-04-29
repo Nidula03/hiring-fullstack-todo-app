@@ -144,6 +144,8 @@ function App() {
 
           {error && <div className="error-message">{error}</div>}
 
+          <TodoForm onAddTodo={addTodo} />
+
           <div className="filter-section">
             <label htmlFor="date-filter">Filter by Due Date:</label>
             <input
@@ -151,7 +153,7 @@ function App() {
               type="date"
               value={filterDate}
               onChange={(e) => setFilterDate(e.target.value)}
-              className="date-filter-input"
+              className={`date-filter-input ${filterDate ? 'has-value' : ''}`}
             />
             {filterDate && (
               <button
@@ -162,8 +164,6 @@ function App() {
               </button>
             )}
           </div>
-
-          <TodoForm onAddTodo={addTodo} />
 
           {loading ? (
             <div className="loading">Loading todos...</div>
